@@ -90,6 +90,24 @@ def search_pokemon(name):
     return pokemon
 
 
+# 指定されたポケモンの検索回数を増加させる関数
+def increment_count(id):
+    conn = get_connection_db()
+    c = conn.cursor()
+    c.execute("UPDATE pokemon SET count = count + 1 WHERE id = ?", (id,))
+    conn.commit()
+    c.close()
+
+
+# ポケモンの検索ランキングを取得する関数
+def get_count():
+    conn = get_connection_db()
+    c = conn.cursor()
+    rankings = c.execute("SELECT name , count FROM pokemon ORDER BY count DESC LIMIT 10").fetchall()
+    c.close()
+    return rankings
+
+
 # def random_pick(rp):
 #     conn = get_connection_db()
 #     c = conn.cursor()
